@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <style>
+        .extraRun {
+            width: 50px;
+            font-size: 15px;
+            text-align: center;
+        }
+        .tdScore {
+            font-size: 35px;
+            text-align: center;
+            padding: 4px;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .btnRemove {
+            background-color: red;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btnOver {
+            background-color: DodgerBlue;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn {
+            background-color: DodgerBlue;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btnRun {
+            background-color: DodgerBlue;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left:12px;
+        }
+            /* Darker background on mouse-over */
+            .btn:hover {
+                background-color: RoyalBlue;
+            }
+    </style>
+</head>
+<body>
+    <div style="overflow-x:auto;">
+        <table>
+            <tr>
+                <td class="tdScore">
+                    <label id="lblTotal">0</label>
+                    <label>-</label>
+                    <label id="lblWicket">0</label>
+                </td>
+                <td>
+                    <input type="hidden" id="hdnBallIndex" value="0" />
+                    <button id="btnZero" onclick="AddRun(0)" class="btnRun">0</button>
+                    <button id="btnOne" onclick="AddRun(1)" class="btnRun">1</button>
+                    <button id="btnTwo" onclick="AddRun(2)" class="btnRun">2</button>
+                    <button id="btnThree" onclick="AddRun(3)" class="btnRun">3</button>
+                </td>
+               
+            </tr>
+            <tr>
+                <td class="tdScore">
+                    <label>ov</label>
+                    <label id="lblOver">0.0</label>
+                </td>
+                <td>
+                    <button id="btnFour" onclick="AddRun(4)" class="btnRun">4</button>
+                    <button id="btnFive" onclick="AddRun(5)" class="btnRun">5</button>
+                    <button id="btnSix" onclick="AddRun(6)" class="btnRun">6</button>
+                    <button id="btnWicket" onclick="AddWicket()" class="btnRun">W</button>
+                </td>
+             
+            </tr>
+            <tr>
+                <td>
+                    <button id="btnEnable" class="btnOver" onclick="EnableDisableButton()">Eanble</button>
+                </td>
+                <td>
+                    <button type="button" id="btnDeleteBall" onclick="DeleteBall()" disabled>Del Ball</button>
+                    <button type="button" id="btnDeleteOver" onclick="DeleteOver()" disabled>Del Over</button>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <button id="btnAddOver" class="btnOver" onclick="AddOver()">Add Over</button>
+                    <input type="hidden" id="hdnOverRow" value="0" />
+                </td>
+                <td>
+                    <input type="text" id="txtExtraRun" class="extraRun" />
+                    <button id="btnAddExtra" class="btnOver" onclick="AddExtraRun()">Extra</button>
+
+                </td>
+              
+            </tr>
+        </table>
+        <table id="tblOver">
+            <tr>
+                <th>Over</th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th>RIO</th>
+                <th>REO</th>
+            </tr>
+        </table>
+
+    </div>
+    <footer>
+        <p>developed by JK Bloch, Version 1.0</p>
+    </footer>
+    <script>
+        AddOver();
+        function AddOver() {
+            var table = document.getElementById("tblOver");
+            var iOverRowIndex = 0;
+            var iRIOPreValue = 0;
+            var iREOPreValue = parseInt(document.getElementById("lblTotal").innerText);;
+
+            iOverRowIndex = parseInt(document.getElementById("hdnOverRow").value);
+            iOverRowIndex = iOverRowIndex + 1;
+
+            var row = table.insertRow(1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
+            var cell8 = row.insertCell(7);
+            var cell9 = row.insertCell(8);
+
+            cell1.innerHTML = iOverRowIndex;
+            cell2.innerHTML = "<label id='lblBall_" + iOverRowIndex + "_1'></label>";
+            cell3.innerHTML = "<label id='lblBall_" + iOverRowIndex + "_2'></label>";
+            cell4.innerHTML = "<label id='lblBall_" + iOverRowIndex + "_3'></label>";
+            cell5.innerHTML = "<label id='lblBall_" + iOverRowIndex + "_4'></label>";
+            cell6.innerHTML = "<label id='lblBall_" + iOverRowIndex + "_5'></label>";
+            cell7.innerHTML = "<label id='lblBall_" + iOverRowIndex + "_6'></label>";
+            cell8.innerHTML = "<label id='lblRIO_" + iOverRowIndex + "'>" + iRIOPreValue + "</label>";
+            cell9.innerHTML = "<label id='lblREO_" + iOverRowIndex + "'>" + iREOPreValue + "</label>";
+            document.getElementById("hdnOverRow").value = iOverRowIndex;
+        }
+        function DeleteOver() {
+            var table = document.getElementById("tblOver");
+            var iOverRowIndex = 0;          
+            table.deleteRow(1);
+            iOverRowIndex = parseInt(document.getElementById("hdnOverRow").value);
+            iOverRowIndex = iOverRowIndex - 1;
+            document.getElementById("hdnOverRow").value = iOverRowIndex;
+            document.getElementById("lblOver").innerText = iOverRowIndex +".0";
+            if (true) {
+                document.getElementById("hdnBallIndex").value = 0;
+            }
+        }
+        function AddRun(run) {
+            var iOverRowIndex = 0;
+            var iBallIndex = 0;
+            var iRIORun = 0;
+            var iREORun = 0;
+            var iTotalRun = 0;
+            var sTotalOver = "";
+            iTotalRun = parseInt(document.getElementById("lblTotal").innerText);
+            sTotalOver = document.getElementById("lblOver").innerText;
+            var iOver = parseInt(document.getElementById("lblOver").innerText.split('.')[0]);
+            var iBall = parseInt(document.getElementById("lblOver").innerText.split('.')[1]);
+
+            iOverRowIndex = parseInt(document.getElementById("hdnOverRow").value);
+            iBallIndex = parseInt(document.getElementById("hdnBallIndex").value);
+
+            iRIORun = parseInt(document.getElementById("lblRIO_" + iOverRowIndex).innerText);
+            iREORun = parseInt(document.getElementById("lblREO_" + iOverRowIndex).innerText);
+
+            iBallIndex = iBallIndex + 1;
+            var sBallId = "lblBall_" + iOverRowIndex + "_" + iBallIndex;
+            var sRIOId = "lblRIO_" + iOverRowIndex;
+            var sREOId = "lblREO_" + iOverRowIndex;
+
+            document.getElementById(sBallId).innerText = run;
+            document.getElementById(sRIOId).innerText = iRIORun + parseInt(run);
+            document.getElementById(sREOId).innerText = iREORun + parseInt(run);
+            document.getElementById("lblTotal").innerText = iTotalRun + parseInt(run);
+
+            if (iBallIndex == 6) {
+                iBallIndex = 0;
+                document.getElementById("lblOver").innerText = (iOver + 1) + "." + iBallIndex;
+                AddOver();
+            }
+            else {
+                document.getElementById("lblOver").innerText = iOver + "." + iBallIndex;
+
+            }
+            document.getElementById("hdnBallIndex").value = iBallIndex;
+        }
+        function EnableDisableButton() {
+            if (document.getElementById("btnDeleteOver").disabled) {
+                document.getElementById("btnDeleteOver").disabled = false;
+                document.getElementById("btnDeleteBall").disabled = false;
+            }
+            else {
+                document.getElementById("btnDeleteOver").disabled = true;
+                document.getElementById("btnDeleteBall").disabled = true;
+            }
+           
+        }
+        function DisableDeleteBall() {
+            document.getElementById("btnDeleteBall").disabled = true;
+        }
+        function DeleteBall() {
+            var run = 0;
+            var iOverRowIndex = 0;
+            var iBallIndex = 0;
+            var iRIORun = 0;
+            var iREORun = 0;
+            var iTotalRun = 0;
+            var sTotalOver = "";
+            iTotalRun = parseInt(document.getElementById("lblTotal").innerText);
+            sTotalOver = document.getElementById("lblOver").innerText;
+            var iOver = parseInt(document.getElementById("lblOver").innerText.split('.')[0]);
+            var iBall = parseInt(document.getElementById("lblOver").innerText.split('.')[1]);
+
+            iOverRowIndex = parseInt(document.getElementById("hdnOverRow").value);
+            iBallIndex = parseInt(document.getElementById("hdnBallIndex").value);
+
+            iRIORun = parseInt(document.getElementById("lblRIO_" + iOverRowIndex).innerText);
+            iREORun = parseInt(document.getElementById("lblREO_" + iOverRowIndex).innerText);
+
+           // iBallIndex = iBallIndex + 1;
+            var sBallId = "lblBall_" + iOverRowIndex + "_" + iBallIndex;
+            var sRIOId = "lblRIO_" + iOverRowIndex;
+            var sREOId = "lblREO_" + iOverRowIndex;
+            run = document.getElementById(sBallId).innerText;
+            document.getElementById(sBallId).innerText = "";
+            document.getElementById(sRIOId).innerText = iRIORun - parseInt(run);
+            document.getElementById(sREOId).innerText = iREORun - parseInt(run);
+            document.getElementById("lblTotal").innerText = iTotalRun - parseInt(run);
+            iBallIndex = iBallIndex - 1;
+            if (iBallIndex <= 0) {
+                DisableDeleteBall();
+                document.getElementById("lblOver").innerText = (iOver - 1) + "." + iBallIndex;
+                DeleteOver();
+            }
+            if (iBallIndex < 0) {               
+                document.getElementById("lblOver").innerText = (iOver - 1) + "." + iBallIndex;
+                //DeleteOver();
+                //iBallIndex = 6;
+            }
+            else {
+                document.getElementById("lblOver").innerText = iOver + "." + iBallIndex;
+
+            }
+            document.getElementById("hdnBallIndex").value = iBallIndex;
+
+        }
+        function AddExtraRun() {
+            var run = 0;
+            var extraRun = 0;
+            var iOverRowIndex = 0;
+            var iBallIndex = 0;
+            var iRIORun = 0;
+            var iREORun = 0;
+            var iTotalRun = 0;
+            var sTotalOver = "";
+            extraRun = parseInt(document.getElementById("txtExtraRun").value);
+            if (extraRun > 0) {
+                iTotalRun = parseInt(document.getElementById("lblTotal").innerText);
+                sTotalOver = document.getElementById("lblOver").innerText;
+                var iOver = parseInt(document.getElementById("lblOver").innerText.split('.')[0]);
+                var iBall = parseInt(document.getElementById("lblOver").innerText.split('.')[1]);
+
+                iOverRowIndex = parseInt(document.getElementById("hdnOverRow").value);
+                iBallIndex = parseInt(document.getElementById("hdnBallIndex").value);
+
+                iRIORun = parseInt(document.getElementById("lblRIO_" + iOverRowIndex).innerText);
+                iREORun = parseInt(document.getElementById("lblREO_" + iOverRowIndex).innerText);
+
+                // iBallIndex = iBallIndex + 1;
+                var sBallId = "lblBall_" + iOverRowIndex + "_" + iBallIndex;
+                var sRIOId = "lblRIO_" + iOverRowIndex;
+                var sREOId = "lblREO_" + iOverRowIndex;
+                run = document.getElementById(sBallId).innerText
+                run = parseInt(run) + parseInt(extraRun)
+                document.getElementById(sBallId).innerText = parseInt(run);
+                document.getElementById(sRIOId).innerText = iRIORun + parseInt(extraRun);
+                document.getElementById(sREOId).innerText = iREORun + parseInt(extraRun);
+                document.getElementById("lblTotal").innerText = iTotalRun + parseInt(extraRun);
+                document.getElementById("txtExtraRun").value = "";
+            }
+           
+         
+           
+
+
+        }
+        function AddWicket() {
+            var iWicket = 0;
+            iWicket = parseInt(document.getElementById("lblWicket").innerText) + 1;
+            document.getElementById("lblWicket").innerText = iWicket;
+        }
+    </script>
+</body>
+
+</html>
